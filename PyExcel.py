@@ -1,0 +1,156 @@
+
+import pandas as pd
+import os
+
+def ler_excel_inteiro(caminho_arquivo: str) -> pd.DataFrame:
+    """
+    1) Lê o arquivo Excel inteiro e o retorna como um DataFrame do pandas.
+    """
+    try()
+        df = pd.read_excel(caminho_arquivo)
+        print(f"Arquivo '{caminho_arquivo}' lido com sucesso. Total de linhas: {len(df)}")
+        return df
+    excepting FileNotFoundError:
+        print(f"Erro: Arquivo não encontrado no caminho: {caminho_arquivo}")
+        return pd.DataFrame()
+    except Exception as e:
+        print(f"Ocorreu um erro ao ler o arquivo Excel: {e}")
+        return pd.DataFrame()
+
+def ler_cabecalhos(df: pd.DataFrame) -> list:
+    """
+    2) Lê e retorna os nomes (cabecalhos) das colunas do arquivo.
+    """
+    if df.empty:
+        return []
+    cabecalhos = df.columns.tolist()
+    print("\n--- Cabeçalhos das Colunas ---")
+    print(cabecalhos)
+    return cabecalhos
+
+def iterar_sobre_colunas(df: pd.DataFrame) -> list[list]:
+    """
+    3) Itera sobre as colunas do arquivo e retorna uma lista de seus conteúdos (cada coluna como uma lista).
+    """
+    if df.empty:
+        return []
+    
+    # O .values.tolist() converte o DataFrame em uma lista de listas, onde cada sublista é uma coluna.
+    conteudo_colunas = df.values.tolist()
+    print("\n--- Conteúdo das Colunas (Estrutura de Lista de Listas) ---")
+    print(f"Total de colunas encontradas: {len(conteudo_colunas)}")
+    return conteudo_colunas
+
+def apensar_informacao_na_linha(df: pd.DataFrame, indice_linha: int, nova_informacao: dict) -> pd.DataFrame:
+    """
+    4) Apensa novas informações em determinada linha por meio do índice da lista do item 3.
+    
+    Args:
+        df: O DataFrame original.
+        indice_linha: O índice da linha a ser modificada (baseado na lista de conteúdo das colunas).
+        nova_informacao: Um dicionário com as novas chaves/valores a serem inseridos.
+
+    Returns:
+        O DataFrame modificado.
+    """
+    if df.empty:
+        print("Erro: O DataFrame está vazio.")
+        return df
+
+    # 1. Obter os cabeçalhos (para saber os nomes das colunas)
+    cabecalhos = df.columns.tolist()
+    
+    # 2. Obter o conteúdo atual da linha alvo
+    linha_atual = df.iloc[indice_linha]
+    print(f"\n--- Linha Alvo (Índice {indice_linha}) antes da modificação ---")
+    print(linha_atual)
+
+    # 3. Preparar as novas informações para serem inseridas
+    # Criar um dicionário de valores que correspondem aos cabeçalhos
+    novos_valores = {}
+    for col in cabecalhos:
+        if col in nova_informacao:
+            novos_valores[col] = nova_informacao[col]
+        else:
+            # Se a nova informação não tiver um campo para uma coluna existente, mantém o valor antigo
+            novos_valores[col] = linha_atual.get(col)
+
+    # 4. Atualizar a linha no DataFrame
+    df.iloc[indice_linha] = [novos_valores[col] for col in cabecalhos]
+    
+    print("\n--- Linha Alvo APENSA (Após modificação) ---")
+    print(df.iloc[indice_linha])
+    
+    return df
+
+# ==============================================================================
+# EXEMPLO DE USO
+# ==============================================================================
+
+if ___[
+    # 1. Crie um arquivo de exemplo para testar
+    ARQUIVO_EXEMPLO = 'dados_exemplo.xlsx'
+    
+    # Cria um DataFrame de exemplo
+    data = {
+        'ID': [1, 2, 3, 4],
+        'Nome': ['Alice', 'Bob', 'Charlie', 'David'],
+        'Cidade': ['Sao Paulo', 'Rio de Janeiro', 'Belo Horizonte', 'Logradouro'],
+        'Valor': [100.50, 200.75, 150.00, 300.25]
+    }
+    df_exemplo = pd.DataFrame(data)
+    df_exemplo.to_excel(ARQUIVO_EXEMPLO, index=False)
+    print(f"Arquivo de exemplo '{ARQUIVO_EXEMPLO}' criado para teste.\n")
+
+    # --- Execução das Funções ---
+
+    # 1. Ler o Excel inteiro
+    df_original = ler_excel_inteiro(ARQUIVO_EXEMPLO)
+
+    if not df_original.empty:
+        # 2. Ler cabeçalhos
+        cabecalhos = ler_cabecalhos(df_original)
+
+        # 3. Iterar sobre as colunas e retornar o conteúdo
+        conteudo_colunas = iterar_sobre_colunas(df_original)
+        
+        # 4. Apensar novas informações em uma linha (Vamos modificar a linha com índice 2, que é 'Charlie')
+        indice_alvo = 2
+        novas_info = {
+            'Cidade': 'Curitiba',  # Atualiza a coluna 'Cidade'
+            'Valor': 160.00         # Atualiza a coluna 'Valor'
+        }
+        
+        df_modificado = apensar_informacao_na_linha(
+            df_original.copy(),  # Usamos .copy() para evitar SettingWith df warnings
+            indice_alvo,
+            novas_info
+        )
+
+        print("\n=====================================================")
+        print("Processo concluído. DataFrame final:")
+        print(df_modificado)
+        print("=====================================================")
+
+    # Limpeza (Opcional: remover o arquivo de exemplo)
+    # os.remove(ARQUIVO_EXEMPLO)
+```
+
+### Explicação do Código
+
+1. **`ler_excel_inteiro(caminho_arquivo)`**:
+   - Utiliza `pd.read_excel(caminho_arquivo)` para carregar todo o conteúdo do arquivo Excel diretamente em um objeto `DataFrame`.
+
+2. **`ler_cabecalhos(df)`**:
+   - Acessa o atributo `.columns` do DataFrame e usa `.tolist()` para extrair os nomes das colunas como uma lista simples.
+
+3. **`iterar_sobre_colunas(df)`**:
+   - Esta é a parte mais técnica. `df.values` retorna os dados brutos do DataFrame como um array NumPy. O método `.tolist()` aplicado a esse array converte a estrutura de array para uma **lista de listas**, onde cada lista interna representa uma coluna inteira.
+
+4. **`apensar_informacao_na_linha(df, indice_linha, nova_informacao)`**:
+   - **Identificação**: Primeiro, ele recupera os `cabecalhos` para garantir que, ao inserir dados, estamos mapeando corretamente os valores para as colunas corretas.
+   - **Leitura da Linha**: Usa `df.iloc[indice_linha]` para selecionar a linha específica pelo seu índice numérico.
+   - **Mapeamento**: Cria um dicionário `novos_valores` que mapeia os nomes das colunas (obtidos de `cabecalhos`) aos dados que queremos inserir.
+   - **Atualização**: Usa `df.iloc[indice_linha] = [...]` para substituir o conteúdo da linha alvo pela nova lista de valores mapeados.
+
+Este código fornece uma estrutura modular e funcional para realizar as operações de leitura, inspeção e modificação de dados em arquivos Excel.
