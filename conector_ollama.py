@@ -2,8 +2,8 @@ import ollama
 
 from ollama import Client
 
-# Replace with your local network IP if localhost does not work
-# client = Client(host='http://localhost:11434')
+Replace with your local network IP if localhost does not work
+client = Client(host='http://localhost:11434')
 
 # response = client.chat(
 #     model='gemma4:latest',
