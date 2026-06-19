@@ -2,12 +2,23 @@
 import pandas as pd
 import os
 
-def ler_excel_inteiro(caminho_arquivo: str) -> pd.DataFrame:
+def ler_excel_inteiro(caminho_arquivo: str, aba: str = None) -> pd.DataFrame:
     """
     1) Lê o arquivo Excel inteiro e o retorna como um DataFrame do pandas.
+    2) Permite selecionar a aba desejada.
+    
+    Ler aba padrão (primeira): df = ler_excel_inteiro("arquivo.xlsx")
+    Ler aba específica: df = ler_excel_inteiro("arquivo.xlsx", aba="Sheet1")
+    Ler aba pelo índice:
+        df = ler_excel_inteiro("arquivo.xlsx", aba=0)  # Primeira aba
+        df = ler_excel_inteiro("arquivo.xlsx", aba=1)  # Segunda aba
+    OBSERVACAO IMPORTANTE
+        sheet_name=None → lê todas as abas (retorna um dicionário de DataFrames)
+        sheet_name="nome" → lê aba específica
+
     """
     try:
-        df = pd.read_excel(caminho_arquivo)
+        df = pd.read_excel(caminho_arquivo, sheet_name=aba)
         print(f"Arquivo '{caminho_arquivo}' lido com sucesso. Total de linhas: {len(df)}")
         return df
     except FileNotFoundError:
@@ -83,54 +94,46 @@ def apensar_informacao_na_linha(df: pd.DataFrame, indice_linha: int, nova_inform
     
     return df
 
-# ==============================================================================
-# EXEMPLO DE USO
-# ==============================================================================
-
-if __name__ == "__main__":
-    # 1. Crie um arquivo de exemplo para testar
-    ARQUIVO_EXEMPLO = 'dados_exemplo.xlsx'
+def ler_colunas_por_linha(df: pd.DataFrame) -> list[dict]:
+    """
+    5) Lê o conteúdo das colunas de cada linha do arquivo e retorna uma lista de dicionários, onde cada dicionário representa uma linha com seus respectivos campos e valores.
+    """
+    if df.empty:
+        return []
     
-    # Cria um DataFrame de exemplo
-    data = {
-        'ID': [1, 2, 3, 4],
-        'Nome': ['Alice', 'Bob', 'Charlie', 'David'],
-        'Cidade': ['São Paulo', 'Rio de Janeiro', 'Belo Horizonte', 'Logradouro'],
-        'Valor': [100.50, 200.75, 150.00, 300.25]
-    }
-    df_exemplo = pd.DataFrame(data)
-    df_exemplo.to_excel(ARQUIVO_EXEMPLO, index=False)
-    print(f"Arquivo de exemplo '{ARQUIVO_EXEMPLO}' criado para teste.\n")
+    colunas = df.to_dict(orient='records')
+    print("\n--- Colunas por Linha (Lista de Dicionários) ---")
+    for i, linha in enumerate(colunas):
+        print(f"Linha {i}: {linha}")
+    return colunas
 
-    # --- Execução das Funções ---
+def ler_colunas_por_linha_especifica(df: pd.DataFrame, indice_linha: int) -> dict:
+    """
+    6) Lê o histórico de uma linha específica do arquivo e retorna um dicionário com os campos e valores dessa linha.
+    """
+    if df.empty:
+        return {}
+    
+    if indice_linha < 0 or indice_linha >= len(df):
+        print(f"Erro: Índice da linha {indice_linha} está fora do intervalo.")
+        return {}
+    
+    linha_especifica = df.iloc[indice_linha].to_dict()
+    print(f"\n--- Histórico da Linha Específica (Índice {indice_linha}) ---")
+    print(linha_especifica)
+    return linha_especifica
 
-    # 1. Ler o Excel inteiro
-    df_original = ler_excel_inteiro(ARQUIVO_EXEMPLO)
 
-    if not df_original.empty:
-        # 2. Ler cabeçalhos
-        cabecalhos = ler_cabecalhos(df_original)
 
-        # 3. Iterar sobre as colunas e retornar o conteúdo
-        conteudo_colunas = iterar_sobre_colunas(df_original)
-        
-        # 4. Apensar novas informações em uma linha (Vamos modificar a linha com índice 2, que é 'Charlie')
-        indice_alvo = 2
-        novas_info = {
-            'Cidade': 'Curitiba',  # Atualiza a coluna 'Cidade'
-            'Valor': 160.00         # Atualiza a coluna 'Valor'
-        }
-        
-        df_modificado = apensar_informacao_na_linha(
-            df_original.copy(),  # Usamos .copy() para evitar SettingWith df warnings
-            indice_alvo,
-            novas_info
-        )
+########testes
+# for i in ler_colunas_por_linha_especifica(marco, 1).keys():
+#     print(i)
 
-        print("\n=====================================================")
-        print("Processo concluído. DataFrame final:")
-        print(df_modificado)
-        print("=====================================================")
+# print(ler_colunas_por_linha_especifica(marco, 1)["Historico"])
+# x = ler_colunas_por_linha_especifica(marco, 1)["Historico"]
 
-    # Limpeza (Opcional: remover o arquivo de exemplo)
-    # os.remove(ARQUIVO_EXEMPLO)
+# historicos_marco=ler_colunas_por_linha(marco)
+# for i in historicos_marco:
+#     print(i["Historico"])
+    
+
