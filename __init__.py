@@ -1,13 +1,11 @@
-# from datetime import datetime
-# from datetime import timedelta
-# import os
-# from .conector_ollama import *
-# from .funcoes_texto import *
-# from .PyExcel import *
-# from .navegacao_arquivos import *
-# import glob
 
-print("Importando pacote leitor_excel")
+from datetime import datetime, timedelta
+import os
+import glob
 
 from .conector_ollama import *
+from .funcoes_texto import *
+from .PyExcel import *
 from .navegacao_arquivos import *
+
+print("Importando pacote leitor_excel")
