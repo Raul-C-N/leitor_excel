@@ -42,12 +42,12 @@ print("Tempo de execução:", duracao)
 ########testes PyExcel.py
 pergunta_vidro="""ocorreu a quebra de vidro de veículo no texto abaixo? responda apenas com sim ou não:"""
 excel="DECAP - fev mar e abril 2026 - art. 155 e 157 - infocrim - analise das ocorrencias e MO -v.2.xlsx"
-marco=ler_excel_inteiro(excel,2)
+abril=ler_excel_inteiro(excel,2)
 
-# for i in ler_colunas_por_linha_especifica(marco, 1).keys():
-    print(i)
+# for i in ler_colunas_por_linha_especifica(abril, 1).keys():
+    # print(i)
 
-# print(ler_colunas_por_linha_especifica(marco, 1)["Historico"])
+# print(ler_colunas_por_linha_especifica(abril, 1)["Historico"])
 
 inicio_tempo_total=datetime.now()
 n=0
@@ -55,8 +55,8 @@ lista_resultados=[]
 lista_tempo_processamento=[]
 lista_respostas_ia=[]
 for i in range(0, 100):  # Ajuste o range conforme necessário
-    x = ler_colunas_por_linha_especifica(marco, n)["Historico"]
-    y = ler_colunas_por_linha_especifica(marco, n)["NumeroBO"]
+    x = ler_colunas_por_linha_especifica(abril, n)["Historico"]
+    y = ler_colunas_por_linha_especifica(abril, n)["NumeroBO"]
     palavra_no_texto(x,"vidro")
     if palavra_no_texto(x,"vidro") == False:
         print("A palavra 'vidro' não foi encontrada no texto.")

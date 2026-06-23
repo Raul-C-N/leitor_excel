@@ -1,0 +1,23 @@
+# [1] 
+#     Ler PyExcel
+excel=glob.glob("*.xlsx")[0]
+abril=ler_excel_inteiro(excel,2)
+n=0
+        # Seleciona a coluna
+x = ler_colunas_por_linha_especifica(abril, n)["Historico"]
+            # salva valores da coluna em uma lista
+
+# [2]#trabalhar com metade do tamanho da lista para não perder o trabalho em caso de
+#     Divide a lista em 2
+#         salva a lista para caso de interrupção do programa
+
+# [3]
+#     fo i in list range(range(0-(len(lista_itens)/2))):
+#         perguntar_ia(pergunta+i)
+
+# [4]
+#     #Validador de string
+#         #verificar se a string é apenas uma boleana (True or False)
+
+
+
