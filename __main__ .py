@@ -17,3 +17,5 @@ def main():
 if __name__ == "__main__":
     main()
     
+#usar este
+#criar pasta planilhas_excel na raiz do projeto e colocar arquivos excel para teste
