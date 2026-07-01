@@ -138,6 +138,7 @@ def ler_abas_excel(caminho_arquivo=None) -> list:
         caminho_arquivo = navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
     abas = list(pd.ExcelFile(caminho_arquivo).sheet_names)
     return abas
+
 def ler_colunas_excel(caminho_arquivo=None, aba=None) -> list:
     """Lê as colunas do excel selecionado. recebe o caminho e a aba.
     Caso não seja fornecido o caminho, pega automaticamente o primeiro excel da pasta 'planilhas_excel'

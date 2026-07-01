@@ -16,7 +16,7 @@ def analisar_com_ia():
     from MODELS import conector_ollama
     from MODELS import PyExcel
     aba_escolhida = escolher_aba_excel()
-
+    coluna_escolhida = escolher_coluna_excel(aba_escolhida)
 
 #escolher qual aba do arquivo excel o usuário deseja analisar? -> importar função para listar as abas do arquivo excel
 def escolher_aba_excel():
@@ -30,12 +30,20 @@ def escolher_aba_excel():
             return aba_escolhida
         else:
             print("Aba inválida. Por favor, digite um nome de aba válido.")
-    
-#listar colunas -> importar funcao para listar as colunas do arquivo excel
-
+            
 #escolher coluna do arquivo excel que o usuário deseja analisar -> importar função para listar as colunas do arquivo excel
+def escolher_coluna_excel(aba_escolhida = None):
+    from MODELS import PyExcel
+    colunas = PyExcel.ler_colunas_excel(aba_escolhida)
+    print(f"Colunas disponíveis no arquivo Excel: {', '.join(colunas)}")
+    while True:
+        coluna_escolhida = input("Digite o nome da coluna que deseja analisar: ").strip()
+        if coluna_escolhida in colunas:
+            print(f"Coluna selecionada para análise: {coluna_escolhida}")
+            return coluna_escolhida
+        else:
+            print("Coluna inválida. Por favor, digite um nome de coluna válido.")
 
-#Qual coluna o usuário deseja analisar com IA?
 # pergunta = input("Qual coluna você deseja analisar com IA? (Digite o nome da coluna): ").strip()
 # print(f"Coluna selecionada para análise com IA: {pergunta}")
 
