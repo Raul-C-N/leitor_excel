@@ -1,11 +1,13 @@
 
 from MODELS import navegacao_arquivos
+from CONTROLLERS import app
 
 def main():
     print("Aplicação executando")
     print("Buscando arquivo Excel...")
     try:
         caminho_excel_0 =navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+        print(f"Caminho do primeiro arquivo Excel encontrado: {caminho_excel_0}")
     except Exception as e:
         print(f"Erro ao executar a aplicação: {e}")
     

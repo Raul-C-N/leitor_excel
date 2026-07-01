@@ -35,8 +35,8 @@ def ler_cabecalhos(df: pd.DataFrame) -> list:
     if df.empty:
         return []
     cabecalhos = df.columns.tolist()
-    print("\n--- Cabeçalhos das Colunas ---")
-    print(cabecalhos)
+    # print("\n--- Cabeçalhos das Colunas ---")
+    # print(cabecalhos)
     return cabecalhos
 
 def iterar_sobre_colunas(df: pd.DataFrame) -> list[list]:
@@ -123,7 +123,12 @@ def ler_colunas_por_linha_especifica(df: pd.DataFrame, indice_linha: int) -> dic
     print(linha_especifica)
     return linha_especifica
 
-
+def ler_abas_excel(caminho_arquivo=None) -> list:
+    from MODELS import navegacao_arquivos
+    if caminho_arquivo is None:
+        caminho_arquivo = navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+    abas = list(pd.ExcelFile(caminho_arquivo).sheet_names)
+    return abas
 
 ########testes
 # for i in ler_colunas_por_linha_especifica(marco, 1).keys():
