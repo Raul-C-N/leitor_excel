@@ -124,11 +124,40 @@ def ler_colunas_por_linha_especifica(df: pd.DataFrame, indice_linha: int) -> dic
     return linha_especifica
 
 def ler_abas_excel(caminho_arquivo=None) -> list:
+    """Lê as abas do excel selecionado. recebe o caminho.
+    Caso não seja fornecido o caminho, pega automaticamente o primeiro excel da pasta 'planilhas_excel'
+
+    Args:
+        caminho_arquivo (_type_, optional): _description_. Defaults to None.
+
+    Returns:
+        list: _description_
+    """
     from MODELS import navegacao_arquivos
     if caminho_arquivo is None:
         caminho_arquivo = navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
     abas = list(pd.ExcelFile(caminho_arquivo).sheet_names)
     return abas
+def ler_colunas_excel(caminho_arquivo=None, aba=None) -> list:
+    """Lê as colunas do excel selecionado. recebe o caminho e a aba.
+    Caso não seja fornecido o caminho, pega automaticamente o primeiro excel da pasta 'planilhas_excel'
+    Caso não seja fornecida a aba, pega automaticamente a primeira aba da planilha excel
+    
+    Args:
+        caminho_arquivo (_type_, optional): _description_. Defaults to None.
+        aba (_type_, optional): _description_. Defaults to None.
+
+    Returns:
+        list: _description_
+    """
+    from MODELS import navegacao_arquivos
+    if caminho_arquivo is None:
+        caminho_arquivo = navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+    if aba is None:
+        aba=0
+    
+    colunas = list(pd.ExcelFile(caminho_arquivo).parse(aba).columns)
+    return colunas
 
 ########testes
 # for i in ler_colunas_por_linha_especifica(marco, 1).keys():

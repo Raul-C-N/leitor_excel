@@ -114,10 +114,17 @@
 from MODELS import PyExcel
 from MODELS import navegacao_arquivos
 from CONTROLLERS import app
-caminho_excel_0 =navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
 
-app.perguntar_modo_analise()
+
+# app.perguntar_modo_analise()
 app.analisar_com_ia()
+
+
+
+
+
+caminho_excel_0 =navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
 aba_escolhida = "abril 2026 -sem duplicados"
-PyExcel.ler_cabecalhos_excel(caminho_excel_0, aba_escolhida)
+df = PyExcel.ler_excel_inteiro(caminho_excel_0, aba_escolhida)
+PyExcel.ler_cabecalhos(df)
 
