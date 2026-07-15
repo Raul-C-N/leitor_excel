@@ -117,7 +117,9 @@ from CONTROLLERS import app
 
 
 # app.perguntar_modo_analise()
-app.analisar_com_ia()
+# app.analisar_com_ia()
+app.escolher_coluna_excel("Janeiro")
+
 
 
 

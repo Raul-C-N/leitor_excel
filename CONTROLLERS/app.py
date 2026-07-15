@@ -32,12 +32,38 @@ def escolher_aba_excel():
             print("Aba inválida. Por favor, digite um nome de aba válido.")
             
 #escolher coluna do arquivo excel que o usuário deseja analisar -> importar função para listar as colunas do arquivo excel
-def escolher_coluna_excel(aba_escolhida = None):
+# def escolher_coluna_excel():
+    # from MODELS import PyExcel
+    # colunas = PyExcel.ler_colunas_excel()
+    # print(f"Colunas disponíveis no arquivo Excel: {', '.join(colunas)}")
+    # while True:
+        # coluna_escolhida = input("Digite o nome da coluna que deseja analisar: ").strip()
+        # if coluna_escolhida in colunas:
+            # print(f"Coluna selecionada para análise: {coluna_escolhida}")
+            # return coluna_escolhida
+        # else:
+            # print("Coluna inválida. Por favor, digite um nome de coluna válido.")
+
+def escolher_coluna_excel(coluna=None):
     from MODELS import PyExcel
-    colunas = PyExcel.ler_colunas_excel(aba_escolhida)
+
+    colunas = PyExcel.ler_colunas_excel()
     print(f"Colunas disponíveis no arquivo Excel: {', '.join(colunas)}")
+
+    # Se uma coluna foi passada como parâmetro
+    if coluna:
+        coluna = coluna.strip()
+        if coluna in colunas:
+            print(f"Coluna selecionada para análise: {coluna}")
+            return coluna
+        else:
+            print(f"A coluna informada '{coluna}' não existe no Excel.")
+            print("Será solicitada uma escolha manual.")
+
+    # Fluxo original (prompt)
     while True:
         coluna_escolhida = input("Digite o nome da coluna que deseja analisar: ").strip()
+
         if coluna_escolhida in colunas:
             print(f"Coluna selecionada para análise: {coluna_escolhida}")
             return coluna_escolhida
