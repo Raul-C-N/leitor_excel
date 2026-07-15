@@ -32,22 +32,22 @@ def escolher_aba_excel():
             print("Aba inválida. Por favor, digite um nome de aba válido.")
             
 #escolher coluna do arquivo excel que o usuário deseja analisar -> importar função para listar as colunas do arquivo excel
-# def escolher_coluna_excel():
-    # from MODELS import PyExcel
-    # colunas = PyExcel.ler_colunas_excel()
-    # print(f"Colunas disponíveis no arquivo Excel: {', '.join(colunas)}")
-    # while True:
-        # coluna_escolhida = input("Digite o nome da coluna que deseja analisar: ").strip()
-        # if coluna_escolhida in colunas:
-            # print(f"Coluna selecionada para análise: {coluna_escolhida}")
-            # return coluna_escolhida
-        # else:
-            # print("Coluna inválida. Por favor, digite um nome de coluna válido.")
 
-def escolher_coluna_excel(coluna=None):
+def escolher_coluna_excel(aba=None,coluna=None):
+    """fornece terminal de escolha de coluna, dada uma aba. Caso não seja fornecida uma aba, a função de escolha de aba será invocada para escolher a aba.
+    
+
+    Args:
+        aba (_type_, optional): _description_. Defaults to None.
+        coluna (_type_, optional): _description_. Defaults to None.
+
+    Returns:
+        coluna escolhida: str
+    """
     from MODELS import PyExcel
-
-    colunas = PyExcel.ler_colunas_excel()
+    if not aba:
+        aba = escolher_aba_excel()
+    colunas = PyExcel.ler_colunas_excel(None,aba)
     print(f"Colunas disponíveis no arquivo Excel: {', '.join(colunas)}")
 
     # Se uma coluna foi passada como parâmetro
