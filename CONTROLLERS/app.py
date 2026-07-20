@@ -3,7 +3,14 @@ def perguntar_modo_analise():
     while True:
         modo = input("Deseja usar o modo de análise com IA ou sem IA? (Digite 'IA' ou 'sem IA'): ").strip().lower()
         if modo in ['ia', 'sem ia']:
-            return modo
+            if modo == 'ia':
+                print("Modo de análise com IA selecionado.")
+                analisar_com_ia()
+            if modo == 'sem ia':
+                print("Modo de análise sem IA selecionado.")
+                # Aqui você pode chamar a função correspondente ao modo sem IA
+                pass  # Substitua por sua função de análise sem IA
+            break
         else:
             print("Opção inválida. Por favor, digite 'IA' ou 'sem IA'.")
 
@@ -12,11 +19,28 @@ pass
 
 #módulo com IA
 def analisar_com_ia():
-    from MODELS import navegacao_arquivos
-    from MODELS import conector_ollama
-    from MODELS import PyExcel
-    aba_escolhida = escolher_aba_excel()
-    coluna_escolhida = escolher_coluna_excel(aba_escolhida)
+    #escolher aba e coluna    
+    try:
+        aba = escolher_aba_excel()
+    except Exception as e:
+        print(f"Erro ao escolher aba ou coluna: {e}")
+    try:
+        coluna = escolher_coluna_excel(aba,None)
+    except Exception as e:  
+        print(f"Erro ao escolher aba ou coluna: {e}")
+    try:
+        pergunta_ia = perguntar_pergunta_ia()
+    except Exception as e:
+        print(f"Erro ao perguntar à IA: {e}")
+    try:
+        palavra_aceleracao = obter_palavra_aceleracao()
+    except Exception as e:
+        print(f"Erro ao obter palavra para aceleração: {e}")
+    try:
+        numero_linhas = perguntar_numero_linhas(None,aba)
+    except Exception as e:
+        print(f"Erro ao perguntar pelo número de linhas: {e}")
+    return aba, coluna, pergunta_ia, palavra_aceleracao, numero_linhas
 
 #escolher qual aba do arquivo excel o usuário deseja analisar? -> importar função para listar as abas do arquivo excel
 def escolher_aba_excel():
@@ -70,15 +94,60 @@ def escolher_coluna_excel(aba=None,coluna=None):
         else:
             print("Coluna inválida. Por favor, digite um nome de coluna válido.")
 
-# pergunta = input("Qual coluna você deseja analisar com IA? (Digite o nome da coluna): ").strip()
-# print(f"Coluna selecionada para análise com IA: {pergunta}")
-
-#qual pergunta o usuário deseja fazer para a IA / salvar a perqunta como variável
+def perguntar_pergunta_ia():
+    """
+    Pergunta ao usuário qual pergunta deseja fazer para a IA.
+    
+    :return: string com a pergunta do usuário
+    """
+    pergunta = input("Qual pergunta você deseja fazer para a IA? ").strip()
+    return pergunta
 
 #deseja usar módulo de aceleração? sim ou não
-#não -> pass 
+def obter_palavra_aceleracao():
+    """
+    Solicita a palavra principal para o módulo de aceleração.
+    Retorna a palavra digitada ou None caso o usuário pressione ENTER.
+    """
+    entrada = input(
+        "Digite palavra principal da sua pergunta para o módulo de aceleração "
+        "ou aperte ENTER para não utilizar o módulo de aceleração: "
+    ).strip()
+    
+    # Retorna a palavra se algo for digitado, ou None se estiver em branco
+    return entrada if entrada else None
 
-#sim -> qual palavra deve ser buscada no texto? -> usar módulo de 'contém palavra'
+def perguntar_numero_linhas(caminho_arquivo=None, aba=None):
+    """
+    Pergunta ao usuário quantas linhas deseja analisar.
+    Retorna uma tupla (1, numero_linhas) com o range a ser usado,
+    ou None caso o usuário apenas pressione ENTER.
+    """
+    from MODELS import PyExcel
+    from MODELS import navegacao_arquivos
 
-#######################################
-# número de linhas para análise?
+    # 1. Resolve o caminho do arquivo primeiro se for None
+    if caminho_arquivo is None:
+        caminho_arquivo = navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+
+    # 2. Busca o valor máximo com o caminho corrigido
+    valor_maximo = PyExcel.quantidade_linhas_excel(caminho_arquivo, aba)
+
+    while True:
+        entrada = input(f"Quantas linhas deseja analisar? (Digite um número até {valor_maximo} ou pressione ENTER para ignorar): ").strip()
+
+        # Pressionou ENTER sem digitar nada -> Retorna None
+        if entrada == "":
+            return (1,valor_maximo)  # Retorna o range completo
+
+        try:
+            numero_linhas = int(entrada)
+            
+            if 0 < numero_linhas <= valor_maximo:
+                # Retorna o range inicial ao final
+                return (1, numero_linhas)
+            else:
+                print(f"Por favor, digite um número entre 1 e {valor_maximo}.")
+                
+        except ValueError:
+            print("Entrada inválida. Por favor, digite um número inteiro.")

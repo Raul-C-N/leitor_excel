@@ -114,19 +114,26 @@
 from MODELS import PyExcel
 from MODELS import navegacao_arquivos
 from CONTROLLERS import app
+caminho_excel_0 =navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+caminho_arquivo =navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+
+aba = app.escolher_aba_excel()
+PyExcel.ler_excel_inteiro(caminho_excel_0,"2023")
+
+
+
 
 
 # app.perguntar_modo_analise()
-# app.analisar_com_ia()
-app.escolher_coluna_excel("Janeiro")
+app.analisar_com_ia()
+aba = app.escolher_aba_excel()
+coluna = app.escolher_coluna_excel(aba,None)
+app.obter_palavra_aceleracao()
 
 
+escolher_aba_excel()
+pergunta_ia = app.perguntar_pergunta_ia()
+pergunta_ia = perguntar_pergunta_ia()
 
 
-
-
-caminho_excel_0 =navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
-aba_escolhida = "abril 2026 -sem duplicados"
-df = PyExcel.ler_excel_inteiro(caminho_excel_0, aba_escolhida)
-PyExcel.ler_cabecalhos(df)
 

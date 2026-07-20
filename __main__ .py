@@ -10,6 +10,9 @@ def main():
         print(f"Caminho do primeiro arquivo Excel encontrado: {caminho_excel_0}")
     except Exception as e:
         print(f"Erro ao executar a aplicação: {e}")
+    #perguntar modo de análise
+    app.perguntar_modo_analise()
+    #executar função de análise com ou sem IA
     
     
     print("Aplicação finalizada com sucesso")
