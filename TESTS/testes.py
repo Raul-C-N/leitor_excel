@@ -40,6 +40,7 @@
 
 
 # # ########testes PyExcel.py
+## script iterativo de análise com IA
 from datetime import datetime
 from MODELS import conector_ollama
 from MODELS import PyExcel
