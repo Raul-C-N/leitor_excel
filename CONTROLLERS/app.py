@@ -40,7 +40,11 @@ def analisar_com_ia():
         numero_linhas = perguntar_numero_linhas(None,aba)
     except Exception as e:
         print(f"Erro ao perguntar pelo número de linhas: {e}")
-    return aba, coluna, pergunta_ia, palavra_aceleracao, numero_linhas
+    try:
+        intervalo_analise = perguntar_intervalo_analise(fim=numero_linhas[1])
+    except Exception as e:
+        print(f"Erro ao perguntar pelo intervalo de análise: {e}")
+    return aba, coluna, pergunta_ia, palavra_aceleracao, numero_linhas, intervalo_analise
 
 #escolher qual aba do arquivo excel o usuário deseja analisar? -> importar função para listar as abas do arquivo excel
 def escolher_aba_excel():
@@ -151,3 +155,31 @@ def perguntar_numero_linhas(caminho_arquivo=None, aba=None):
                 
         except ValueError:
             print("Entrada inválida. Por favor, digite um número inteiro.")
+
+def perguntar_intervalo_analise(inicio = 0, fim=None):
+    """
+    Retorna uma tupla de análise baseado nos valores de índices de início e fim fornecidos.
+    
+    :param inicio: valor inicial do range
+    :param fim: valor final do range
+    :return: tupla com o range de análise dos índices (inicio, fim-1)
+    """
+    if inicio == 0:
+        input_inicio = input(f"Digite o valor inicial do range de análise (padrão: {inicio}): ").strip()
+        try:
+            inicio = int(input_inicio)
+        except ValueError:
+            print("Entrada inválida para o valor inicial. Usando valor padrão.")
+    if fim is None:
+        input_fim = input(f"Digite o valor final do range de análise (padrão: {fim}): ").strip()
+        try:
+            fim = int(input_fim)
+        except ValueError:
+            print("Entrada inválida para o valor final. Usando valor padrão.")
+    if inicio is None or fim is None:
+        print("Valores de início ou fim não foram fornecidos corretamente. Por favor, tente novamente.")
+        return perguntar_intervalo_analise()  # Chamada recursiva para corrigir a entrada
+    if inicio >= fim:
+        print(f"O valor inicial deve ser menor que o valor final {fim}. Por favor, tente novamente.")
+        return perguntar_intervalo_analise()  # Chamada recursiva para corrigir a ordem
+    return (inicio, fim-1)  # Retorna o range ajustado para análise
