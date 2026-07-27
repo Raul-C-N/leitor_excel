@@ -1,4 +1,7 @@
 import pandas as pd
+lista_BO=[]
+lista_respostas_ia=[]
+lista_resultados=[]
 
 def criar_excel(lista_BO=lista_BO, lista_respostas_ia=lista_respostas_ia, lista_resultados=lista_resultados, nome_arquivo="resultado.xlsx"):
     # Verifica se as listas têm o mesmo tamanho

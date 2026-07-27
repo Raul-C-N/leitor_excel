@@ -68,11 +68,15 @@ print("Tempo total de execução:", duracao_total)
 
 
 ####contem texto?
+excel=navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+mes=PyExcel.ler_excel_inteiro(excel,0)
 lista_resultados=[]
 lista_respostas_ia=[]
 lista_BO=[]
 from MODELS import resultados
-palavra="bicicleta"
+# palavra="vidro"
+palavra="aliança"
+# palavra="bicicleta"
 for i in range(len(mes)-1):
     x = PyExcel.ler_colunas_por_linha_especifica(mes, i)["Historico"]
     y = PyExcel.ler_colunas_por_linha_especifica(mes, i)["NumeroBO"]
@@ -83,21 +87,6 @@ for i in range(len(mes)-1):
         x_ext=funcoes_texto.extrair_trecho(x,palavra,100)
         lista_BO.append(y)
         lista_resultados.append(x_ext)
+resultados.criar_excel_contem_palavra(lista_BO=lista_BO, lista_resultados=lista_resultados, nome_arquivo=f"resultado_palavra_{palavra}.xlsx")
+####/contem texto?
 
-criar_excel_contem_palavra()
-
-import pandas as pd
-
-def criar_excel_contem_palavra(lista_BO=lista_BO, lista_resultados=lista_resultados, nome_arquivo="resultado_palavra.xlsx"):
-    # Verifica se as listas têm o mesmo tamanho
-    if not (len(lista_BO) == len(lista_resultados)):
-        raise ValueError("As três listas devem ter o mesmo tamanho.")
-
-    df = pd.DataFrame({
-        "lista_BO": lista_BO,
-        "lista_resultados": lista_resultados
-    })
-
-    df.to_excel(nome_arquivo, index=False)
-
-    return nome_arquivo
