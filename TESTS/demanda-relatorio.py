@@ -24,12 +24,12 @@ lista_BO=[]
 for i in range(0, 1000):  # Ajuste o range conforme necessário
     x = PyExcel.ler_colunas_por_linha_especifica(mes, n)["Historico"]
     y = PyExcel.ler_colunas_por_linha_especifica(mes, n)["NumeroBO"]
-    funcoes_texto.palavra_no_texto(x,"vidro")
-    if funcoes_texto.palavra_no_texto(x,"vidro") == False:
-        print("A palavra 'vidro' não foi encontrada no texto.")
+    funcoes_texto.palavra_no_texto(x,palavra)
+    if funcoes_texto.palavra_no_texto(x,palavra) == False:
+        print("A palavra '" + palavra + "' não foi encontrada no texto.")
         n+=1
     else:
-        x_ext=funcoes_texto.extrair_trecho(x,"vidro",100)
+        x_ext=funcoes_texto.extrair_trecho(x,palavra,100)
     ###IA
         inicio = datetime.now()
         print("Início:", inicio)
@@ -64,9 +64,40 @@ total = sum(lista, timedelta())
 print("processamento efetivo: " + str(total))  # 0:30:00
 print("Tempo total de execução:", duracao_total)
 
-lista_BO
-lista_respostas_ia
-lista_resultados
 
 
 
+####contem texto?
+lista_resultados=[]
+lista_respostas_ia=[]
+lista_BO=[]
+from MODELS import resultados
+palavra="bicicleta"
+for i in range(len(mes)-1):
+    x = PyExcel.ler_colunas_por_linha_especifica(mes, i)["Historico"]
+    y = PyExcel.ler_colunas_por_linha_especifica(mes, i)["NumeroBO"]
+    funcoes_texto.palavra_no_texto(x,palavra)
+    if funcoes_texto.palavra_no_texto(x,palavra) == False:
+        print("A palavra '" + palavra + "' não foi encontrada no texto.")
+    else:
+        x_ext=funcoes_texto.extrair_trecho(x,palavra,100)
+        lista_BO.append(y)
+        lista_resultados.append(x_ext)
+
+criar_excel_contem_palavra()
+
+import pandas as pd
+
+def criar_excel_contem_palavra(lista_BO=lista_BO, lista_resultados=lista_resultados, nome_arquivo="resultado_palavra.xlsx"):
+    # Verifica se as listas têm o mesmo tamanho
+    if not (len(lista_BO) == len(lista_resultados)):
+        raise ValueError("As três listas devem ter o mesmo tamanho.")
+
+    df = pd.DataFrame({
+        "lista_BO": lista_BO,
+        "lista_resultados": lista_resultados
+    })
+
+    df.to_excel(nome_arquivo, index=False)
+
+    return nome_arquivo
