@@ -5,15 +5,34 @@ from MODELS import PyExcel
 from MODELS import navegacao_arquivos
 from MODELS import funcoes_texto
 from CONTROLLERS import app
+from MODELS import resultados
+##quebra-vidro
+#palavra="vidro"
+#pergunta_vidro="""ocorreu a quebra de vidro de veículo no texto abaixo? responda apenas com sim ou não:"""
+##aliança
+palavra="aliança"
+pergunta_vidro="""ocorreu a subtração de uma aliança ou jóia no texto abaixo? responda apenas com sim ou não:"""
+###celular
+#palavra="celular"
+#pergunta_vidro="""ocorreu a subtração de um telefone celular no texto abaixo? responda apenas com sim ou não:"""
+###bicicleta
+#palavra="bicicleta"
+#pergunta_vidro="""O criminoso usou bicicleta para realizar o crime no texto abaixo? responda apenas com sim ou não:"""
+###motocicleta
+#palavra="moto"
+#pergunta_vidro="""O criminoso usou uma moto para realizar o crime no texto abaixo? responda apenas com sim ou não:"""
 
-pergunta_vidro="""ocorreu a quebra de vidro de veículo no texto abaixo? responda apenas com sim ou não:"""
+
+
+
 excel=navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+
 mes=PyExcel.ler_excel_inteiro(excel,0)
 
 # for i in ler_colunas_por_linha_especifica(abril, 1).keys():
     # print(i)
 
-print(PyExcel.ler_colunas_por_linha_especifica(mes, 1)["Historico"])
+# print(PyExcel.ler_colunas_por_linha_especifica(mes, 1)["Historico"])
 
 inicio_tempo_total=datetime.now()
 n=0
@@ -21,6 +40,7 @@ lista_resultados=[]
 lista_tempo_processamento=[]
 lista_respostas_ia=[]
 lista_BO=[]
+# for i in range(0, 36788):  # Ajuste o range conforme necessário
 for i in range(0, 1000):  # Ajuste o range conforme necessário
     x = PyExcel.ler_colunas_por_linha_especifica(mes, n)["Historico"]
     y = PyExcel.ler_colunas_por_linha_especifica(mes, n)["NumeroBO"]
@@ -64,29 +84,29 @@ total = sum(lista, timedelta())
 print("processamento efetivo: " + str(total))  # 0:30:00
 print("Tempo total de execução:", duracao_total)
 
-
+resultados.criar_excel(lista_BO, lista_respostas_ia, lista_resultados, nome_arquivo="resultado_"+palavra+"_maio.xlsx")
 
 
 ####contem texto?
-excel=navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
-mes=PyExcel.ler_excel_inteiro(excel,0)
-lista_resultados=[]
-lista_respostas_ia=[]
-lista_BO=[]
-from MODELS import resultados
-# palavra="vidro"
-palavra="aliança"
-# palavra="bicicleta"
-for i in range(len(mes)-1):
-    x = PyExcel.ler_colunas_por_linha_especifica(mes, i)["Historico"]
-    y = PyExcel.ler_colunas_por_linha_especifica(mes, i)["NumeroBO"]
-    funcoes_texto.palavra_no_texto(x,palavra)
-    if funcoes_texto.palavra_no_texto(x,palavra) == False:
-        print("A palavra '" + palavra + "' não foi encontrada no texto.")
-    else:
-        x_ext=funcoes_texto.extrair_trecho(x,palavra,100)
-        lista_BO.append(y)
-        lista_resultados.append(x_ext)
-resultados.criar_excel_contem_palavra(lista_BO=lista_BO, lista_resultados=lista_resultados, nome_arquivo=f"resultado_palavra_{palavra}.xlsx")
-####/contem texto?
+#excel=navegacao_arquivos.pegar_caminho_primeiro_excel_pasta_planilhas()
+#mes=PyExcel.ler_excel_inteiro(excel,0)
+#lista_resultados=[]
+#lista_respostas_ia=[]
+#lista_BO=[]
+#from MODELS import resultados
+# #palavra="vidro"
+#palavra="aliança"
+# #palavra="bicicleta"
+#for i in range(len(mes)-1):
+#    x = PyExcel.ler_colunas_por_linha_especifica(mes, i)["Historico"]
+#    y = PyExcel.ler_colunas_por_linha_especifica(mes, i)["NumeroBO"]
+#    funcoes_texto.palavra_no_texto(x,palavra)
+#    if funcoes_texto.palavra_no_texto(x,palavra) == False:
+#        print("A palavra '" + palavra + "' não foi encontrada no texto.")
+#    else:
+#        x_ext=funcoes_texto.extrair_trecho(x,palavra,100)
+#        lista_BO.append(y)
+#        lista_resultados.append(x_ext)
+#resultados.criar_excel_contem_palavra(lista_BO=lista_BO, lista_resultados=lista_resultados, nome_arquivo=f"resultado_palavra_{palavra}.xlsx")
+#/contem texto?
 
