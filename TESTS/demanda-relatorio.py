@@ -41,7 +41,8 @@ lista_tempo_processamento=[]
 lista_respostas_ia=[]
 lista_BO=[]
 # for i in range(0, 36788):  # Ajuste o range conforme necessário
-for i in range(0, 1000):  # Ajuste o range conforme necessário
+# for i in range(0, 23022):  # Ajuste o range conforme necessário
+for i in range(0, 202):  # Ajuste o range conforme necessário
     x = PyExcel.ler_colunas_por_linha_especifica(mes, n)["Historico"]
     y = PyExcel.ler_colunas_por_linha_especifica(mes, n)["NumeroBO"]
     funcoes_texto.palavra_no_texto(x,palavra)
@@ -84,7 +85,15 @@ total = sum(lista, timedelta())
 print("processamento efetivo: " + str(total))  # 0:30:00
 print("Tempo total de execução:", duracao_total)
 
-resultados.criar_excel(lista_BO, lista_respostas_ia, lista_resultados, nome_arquivo="resultado_"+palavra+"_maio.xlsx")
+resultados.criar_excel(lista_BO, lista_respostas_ia, lista_resultados, nome_arquivo="resultado_"+palavra+"_maio_6Seccional.xlsx")
+arquivo_saida = "resultado.txt"
+arquivo_saida = "resultado_"+palavra+"_maio_6Seccional.txt"
+
+# Grava o conteúdo no TXT
+with open(arquivo_saida, "w", encoding="utf-8") as arquivo:
+    arquivo.write(f"processamento efetivo: {total}\n")
+    arquivo.write(f"Tempo total de execução: {duracao_total}\n")
+print(f"Arquivo '{arquivo_saida}' criado com sucesso.")
 
 
 ####contem texto?
